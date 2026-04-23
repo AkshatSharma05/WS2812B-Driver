@@ -21,7 +21,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "ws2812b_config.h"
 #include "ws2812b_driver.h"
+#include <math.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -62,6 +64,27 @@ void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim){
   WS2812B_Callback();
 }
 
+void Wheel(uint8_t pos, uint8_t *r, uint8_t *g, uint8_t *b)
+{
+    if(pos < 85) {
+        *r = (85 - pos);
+        *g = pos;
+        *b = 0;
+    } 
+    else if(pos < 170) {
+        pos -= 85;
+        *r = 0;
+        *g = (85 - pos);
+        *b = pos;
+    } 
+    else {
+        pos -= 170;
+        *r = pos;
+        *g = 0;
+        *b = (85 - pos);
+    }
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -98,33 +121,53 @@ int main(void)
   WS2812B_BindTIM(&htim3, TIM_CHANNEL_4);
   WS2812B_Init();
 
-  uint8_t r = 0;
-  uint8_t g = 0;
-  uint8_t b = 0;
-
+  uint8_t hue = 0;
+  float angle = 0;
+  float phase_step = 1.0f;
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    WS2812B_SetColor(0, 0, 0, 10);
-    WS2812B_SetColor(1, 5, 0, 0);
-    WS2812B_SetColor(2, 0, 5, 0);
-    WS2812B_SetColor(3, 0, 0, 10);
-    WS2812B_SetColor(4, 5, 0, 0);
-    WS2812B_SetColor(5, 0, 5, 0);
-    WS2812B_SetColor(6, 0, 0, 10);
-    WS2812B_SetColor(7, 5, 0, 0);
-    WS2812B_SetColor(8, 0, 5, 0);
-    WS2812B_SetColor(9, 0, 0, 10);
-    WS2812B_SetColor(10, 10, 0, 0);
+    for (int i = 0; i < WS2812B_NUM_LEDS; i++)
+    {
+        uint8_t r, g, b;
+
+        // phase shift per LED
+        float local_angle = angle + (i * phase_step);
+
+        // sine wave (-1 to +1)
+        float s = sinf(local_angle);
+
+        // map to 0–59 PWM range
+        uint8_t brightness = (uint8_t)((s + 1.0f) * 10.0f);
+
+        // get rainbow color
+        Wheel(hue + i, &r, &g, &b);
+
+        // apply brightness scaling
+        r = (r * brightness) / 59;
+        g = (g * brightness) / 59;
+        b = (b * brightness) / 59;
+
+        WS2812B_SetColor(i, r, g, b);
+    }
     
     WS2812B_Update(); 
+
+    angle += 0.05f;   // wave speed
+    hue++;            // rainbow drift
+
+    HAL_Delay(10);  // controls breathing speed
 
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    // if(HAL_GetTick() - last_blink >= 500){
+    //     last_blink = HAL_GetTick();
+    //     HAL_GPIO_TogglePin(LED_INBUILT_GPIO_Port, LED_INBUILT_Pin);
+    // }
   }
   /* USER CODE END 3 */
 }

@@ -3,14 +3,14 @@
 
 /// INCLUDES
 #include "stm32f1xx_hal.h"
+#include "ws2812b_config.h"
 
 /// DEFINES
-#define WS2812B_NUM_LEDS        11
 
 #define WS2812B_HI_VAL          30  // 0.6us
 #define WS2812B_LO_VAL          15  // 0.3us
 
-#define WS2812B_RST_CYCLES      120  //80us
+#define WS2812B_RST_CYCLES      80  //80us
 
 #define WS2812B_BITS_PER_LED    24 // Three 8-bit channels
 

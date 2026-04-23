@@ -1,0 +1,7 @@
+#ifndef WS2812B_CONFIG_H
+
+#define WS2812B_CONFIG_H
+
+#define WS2812B_NUM_LEDS 25
+
+#endif
