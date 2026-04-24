@@ -8,7 +8,7 @@ A WS2812B LED driver for the **STM32F102** (48 MHz). Drives an arbitrary-length 
 
 **Protocol**
 
-<img width="911" height="114" alt="image" src="https://github.com/user-attachments/assets/9b00c93d-301e-4850-98c4-3a7060da9a1c" />
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/9b00c93d-301e-4850-98c4-3a7060da9a1c" />
 
 
 
@@ -90,11 +90,11 @@ void WS2812B_Callback(void);
 
 ## Verification of Signals using an Oscilloscope
 
-<img width="1600" height="1200" alt="image" src="https://github.com/user-attachments/assets/7a0b6497-d554-441b-a666-d255f82b234c" />
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/7a0b6497-d554-441b-a666-d255f82b234c" />
 
 The 24-bit data can be observed in the above image. 
 
-<img width="1600" height="1200" alt="image" src="https://github.com/user-attachments/assets/16fb52b0-df05-4d06-bbbb-1852be22cfd4" />
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/16fb52b0-df05-4d06-bbbb-1852be22cfd4" />
 
 To further validate bit-level correctness, a test pattern was transmitted by setting the blue channel to 10 (binary: 00001010) while keeping other channels constant.
 
