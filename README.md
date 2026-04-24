@@ -113,7 +113,14 @@ Wheel(hue + i, &r, &g, &b);  // rainbow color per LED
 
 `HAL_Delay(10)` sets frame rate; `angle += 0.05f` controls wave speed; `hue++` drifts the rainbow.
 
+### Demo Video
 
+<a href="https://youtu.be/OqzH3_2MIMA">
+  <img 
+    src="https://img.youtube.com/vi/OqzH3_2MIMA/hqdefault.jpg" 
+    width="420"
+    alt="WS2812B Demo Video">
+</a>
 ---
 
 ## Toolchain
